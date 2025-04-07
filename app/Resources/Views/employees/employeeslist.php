@@ -15,14 +15,35 @@ require_once("core\\http\\requestbuilder.php");
 class EmployeeList{
 
     public function render($data){
+        
+        function validateInput($data) {
+            // Trim whitespace from the beginning and end of the input
+            $data = trim($data);
+            // Remove backslashes from the input
+            $data = stripslashes($data);
+            // Convert special characters to HTML entities
+            $data = htmlspecialchars($data);
+
+            $data = preg_match('/[^A-Za-z\-]/', '', $data);
+
+            return $data;
+        }
 
         $requestBuilder = new RequestBuilder();
         $request = $requestBuilder->getRequest();
 
         if($request->getMethod() == 'POST'){
             $controller = new EmployeeController;
-            $params = [$_POST["firstName"], $_POST["lastName"], $_POST["title"]];
-            $controller->createEmployee($params);
+            
+            if (
+                validateInput($_POST["firstName"]) != null &&
+                validateInput($_POST["lastName"]) != null &&
+                validateInput($_POST["title"]) != null
+            ) {
+                $params = [$_POST["firstName"], $_POST["lastName"], $_POST["title"]];
+
+                $controller->createEmployee($params);
+            }
         }
 
         $html = '
