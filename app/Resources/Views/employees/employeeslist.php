@@ -24,7 +24,7 @@ class EmployeeList{
             // Convert special characters to HTML entities
             $data = htmlspecialchars($data);
 
-            $data = preg_match('/^[A-Za-z0-9\- ]+$/', $data);
+            $data = preg_match('/^[A-Za-z\- ]+$/', $data);
 
             return $data;
         }
