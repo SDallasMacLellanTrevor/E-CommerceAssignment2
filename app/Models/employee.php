@@ -21,8 +21,14 @@ class Employee{
 
     // Constructor
     public function __construct() {
-
         $this->dbConnection = (new DBConnectionManager())->getConnection();
+    }
+
+    public function constructWithParams($data) {
+        $this->__construct();
+        $this->firstName = $data[0];
+        $this->lastName = $data[1];
+        $this->title = $data[2];
     }
 
     // Getter and setter for firstName
@@ -88,6 +94,12 @@ class Employee{
     //    $stmt ->setFetchMode(\PDO::FETCH_CLASS, 'Employee');
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_CLASS, Employee::class);
+    }
+
+    public function createEmployee() {
+        $query = "INSERT INTO employees(firstName, lastName, title) VALUES (:firstName, :lastName, :title)";
+        $stmt = $this->dbConnection->prepare($query);
+        $stmt->execute([":firstName" => $this->firstName, ":lastName" => $this->lastName, ":title" => $this->title]);
     }
     
 }

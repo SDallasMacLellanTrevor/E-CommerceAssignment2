@@ -26,6 +26,14 @@ class EmployeeController{
         // If we used return in the view then we can return the data
        //return  (new EmployeeList())->render($data);
     }
+
+    public function createEmployee($data) {
+        $employee = new Employee();
+        $employee->constructWithParams($data);
+        $employee->createEmployee();
+
+        header("Location: employees");
+    }
 }
 
 /*TEST
